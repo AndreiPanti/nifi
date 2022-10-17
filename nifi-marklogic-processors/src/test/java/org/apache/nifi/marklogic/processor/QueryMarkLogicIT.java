@@ -91,9 +91,9 @@ public class QueryMarkLogicIT extends AbstractMarkLogicIT {
         assertEquals(12345, originalFlowFile.getId(), "If a FlowFile is passed to DeleteML/QueryML, it is expected to be sent to the " +
             "ORIGINAL relationship before the job completes");
 
-        assertEquals("The attribute name should be delivered" +
-        " on the success FlowFile so that a user knows what was executed to produce the query result", 
-        "TODO", originalFlowFile.getAttribute("marklogic-query"));
+        assertEquals(originalFlowFile.getAttribute("marklogic-query"), 
+        "The attribute name should be delivered on the success FlowFile so that a user knows what was executed to " + 
+        "produce the query result");
 
         runner.assertTransferCount(QueryMarkLogic.SUCCESS, numDocs);
         runner.assertAllFlowFilesContainAttribute(QueryMarkLogic.SUCCESS, CoreAttributes.FILENAME.key());
@@ -122,11 +122,12 @@ public class QueryMarkLogicIT extends AbstractMarkLogicIT {
         assertEquals(1, runner.getFlowFilesForRelationship(QueryMarkLogic.FAILURE).size());
 
         List<MockFlowFile> files = runner.getFlowFilesForRelationship(QueryMarkLogic.FAILURE);
-        assertEquals("A new FlowFile should have been created and sent to Failure", 1, files.size()); 
+        assertEquals(1, files.size(), "A new FlowFile should have been created and sent to Failure"); 
         MockFlowFile failureFile = files.get(0);
         assertEquals(expectedErrorMessage, failureFile.getAttribute("markLogicErrorMessage"), "The Failure FlowFile should contain the marklogicErrorMessage attribute.");
 
-        assertEquals("No query was returned, so no FlowFiles should have been sent to Success", 0, runner.getFlowFilesForRelationship(QueryMarkLogic.SUCCESS).size() );
+        assertEquals(0, runner.getFlowFilesForRelationship(QueryMarkLogic.SUCCESS).size(), 
+            "No query was returned, so no FlowFiles should have been sent to Success");
         assertEquals(0, runner.getFlowFilesForRelationship(QueryMarkLogic.ORIGINAL).size());
      }
 

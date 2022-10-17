@@ -27,7 +27,6 @@ import com.marklogic.client.document.DocumentManager.Metadata;
 import com.marklogic.client.document.ServerTransform;
 import com.marklogic.client.io.*;
 import com.marklogic.client.query.QueryManager;
-import com.marklogic.client.query.QueryDefinition;
 import com.marklogic.client.query.RawCombinedQueryDefinition;
 import com.marklogic.client.query.StructuredQueryBuilder;
 import com.marklogic.client.query.StructuredQueryBuilder.Operator;
@@ -212,7 +211,7 @@ public class QueryMarkLogic extends AbstractMarkLogicProcessor {
          }
 
         try {
-            QueryBatcherContext<DataMovementManager, QueryBatcher, QueryDefinition>  queryBatcherContext = newQueryBatcher(context, incomingFlowFile);
+            QueryBatcherContext  queryBatcherContext = newQueryBatcher(context, incomingFlowFile);
             session.putAttribute(incomingFlowFile, "marklogic-query", queryBatcherContext.getDefinition().toString());
             configureQueryBatcher(context, session, incomingFlowFile, queryBatcherContext.getBatcher());
 
@@ -237,7 +236,7 @@ public class QueryMarkLogic extends AbstractMarkLogicProcessor {
      * @return A Tuple is returned to simplify the interface here so that this method can create and return both the
      * DataMovementManager and QueryBatcher. Both objects are needed to run the QueryBatcher.
      */
-    private QueryBatcherContext<DataMovementManager, QueryBatcher, QueryDefinition> newQueryBatcher(ProcessContext context, FlowFile incomingFlowFile) {
+    private QueryBatcherContext newQueryBatcher(ProcessContext context, FlowFile incomingFlowFile) {
         DatabaseClient client = getDatabaseClient(context);
         QueryBatcherBuilder.QueryTypeAndValue queryTypeAndValue = determineQueryTypeAndValue(context, incomingFlowFile);
         RangeIndexQuery stateRangeIndexQuery = buildStateQuery(client, context, incomingFlowFile);

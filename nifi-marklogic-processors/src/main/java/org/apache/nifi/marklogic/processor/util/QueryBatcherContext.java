@@ -1,6 +1,10 @@
 package org.apache.nifi.marklogic.processor.util;
 
-public class QueryBatcherContext<DataMovementManager, QueryBatcher, QueryDefinition> {
+import com.marklogic.client.datamovement.DataMovementManager;
+import com.marklogic.client.datamovement.QueryBatcher;
+import com.marklogic.client.query.QueryDefinition;
+
+public class QueryBatcherContext {
 
     private final DataMovementManager manager;
     private final QueryBatcher batcher;
